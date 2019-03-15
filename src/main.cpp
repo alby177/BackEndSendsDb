@@ -1,12 +1,13 @@
 #include <iostream>
-#include "sqliteSrc/sqlite3.h"
-
-typedef struct sqlite3 sqlite3;
+#include "sqliteSrc/sqlitehandler.h"
 
 int main()
 {
-    sqlite3 *db;
-    sqlite3_open("testDb.db", &db);
+    sqliteHandler sqlDb;
+    if (sqlDb.open("testDb.db") == -1)
+        std::cout << "Database opening error" << std::endl;
+    else
+        std::cout << "Database stored in " << sqlDb.getDbPath() << " opened" << std::endl;
 
     return 0;
 }
