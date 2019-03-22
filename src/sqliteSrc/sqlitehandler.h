@@ -17,7 +17,7 @@ public:
     int open(const std::string &path);                          // Open database provided as argument
     std::string getDbPath();                                    // Get database path
     std::string query(const std::string &query);                // Query database with std::string
-
+    int close();                                                // Close the database
 
 private:
     sqlite3 *db;                                                // Database object pointer

@@ -67,7 +67,7 @@ std::string sqliteHandler::query(const std::string &query)
     sqlite3_stmt *dbStatement;
 
     // Prepare database query object
-    int errCode = sqlite3_prepare_v2(db, query.c_str(), query.size(), &dbStatement, nullptr);
+    int errCode = sqlite3_prepare_v2(db, query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
 
     // Check for errors
     if(errCode != SQLITE_OK)
@@ -75,16 +75,32 @@ std::string sqliteHandler::query(const std::string &query)
         // Print error
         std::cout << "Error translating the query to send to the database. Error code: " << errCode << std::endl;
 
+        // Destroy statement object
+        sqlite3_finalize(dbStatement);
+
         // Return void string
         return "";
     }
 
+    // Save number of columns
+    int numCol = sqlite3_column_count(dbStatement);
+
+    // Return string
+    std::string ret;
+
     // Execute the query
-    do
+    while ((errCode = sqlite3_step(dbStatement)) == SQLITE_ROW)
     {
-        errCode = sqlite3_step(dbStatement);
+        // Acquire data from all the database columns
+        for (auto i = 0; i < numCol; ++i)
+        {
+            ret.append(reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i)));
+            ret += "\t|\t";
+        }
+
+        // Add new line
+        ret += "\n";
     }
-    while (errCode == SQLITE_ROW);
 
     // Check for errors
     if(errCode != SQLITE_DONE)
@@ -92,15 +108,42 @@ std::string sqliteHandler::query(const std::string &query)
         // Print error
         std::cout << "Error sending the query to the database. Error code: " << errCode << std::endl;
 
+        // Destroy statement object
+        sqlite3_finalize(dbStatement);
+
         // Return void string
         return "";
     }
 
-    // Return string
-    std::string ret;
+    // Destroy statement object
+    if (sqlite3_finalize(dbStatement) != SQLITE_OK)
+    {
+        // Visualize error
+        std::cout << "Error destroying query statement object. Error code: " << errCode << std::endl;
 
+        // Return void string
+        return "";
+    }
 
+    // Return query string
+    return std::string(ret);
+}
 
+int sqliteHandler::close()
+{
+    // Close the database
+    int errCode = sqlite3_close_v2(db);
 
+    // Check for errors
+    if (errCode != SQLITE_OK)
+    {
+        // Visualize error
+        std::cout << "Error closing the database. Error code: " << errCode << std::endl;
+
+        // Return void string
+        return -1;
+    }
+
+    return 0;
 }
 
