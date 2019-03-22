@@ -16,6 +16,10 @@
 					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="pthread" />
+					<Add library="dl" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="../../bin/Release/BackEndSendsDb" prefix_auto="1" extension_auto="1" />
@@ -25,9 +29,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="pthread" />
+					<Add library="dl" />
 				</Linker>
 			</Target>
 		</Build>
@@ -40,6 +47,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../src/sqliteSrc/sqlite3.h" />
+		<Unit filename="../../src/sqliteSrc/sqlitehandler.cpp" />
+		<Unit filename="../../src/sqliteSrc/sqlitehandler.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

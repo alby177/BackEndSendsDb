@@ -49,8 +49,58 @@ int sqliteHandler::open(const std::string &path)
     return open();
 }
 
+void sqliteHandler::addDb(const std::string &path)
+{
+    // Save db file path
+    dbPath = path;
+}
+
 std::string sqliteHandler::getDbPath()
 {
     // Get database path
     return dbPath;
 }
+
+std::string sqliteHandler::query(const std::string &query)
+{
+    // Compiled database statement handler
+    sqlite3_stmt *dbStatement;
+
+    // Prepare database query object
+    int errCode = sqlite3_prepare_v2(db, query.c_str(), query.size(), &dbStatement, nullptr);
+
+    // Check for errors
+    if(errCode != SQLITE_OK)
+    {
+        // Print error
+        std::cout << "Error translating the query to send to the database. Error code: " << errCode << std::endl;
+
+        // Return void string
+        return "";
+    }
+
+    // Execute the query
+    do
+    {
+        errCode = sqlite3_step(dbStatement);
+    }
+    while (errCode == SQLITE_ROW);
+
+    // Check for errors
+    if(errCode != SQLITE_DONE)
+    {
+        // Print error
+        std::cout << "Error sending the query to the database. Error code: " << errCode << std::endl;
+
+        // Return void string
+        return "";
+    }
+
+    // Return string
+    std::string ret;
+
+
+
+
+}
+
