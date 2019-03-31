@@ -4,12 +4,17 @@
 int main()
 {
     sqliteHandler sqlDb;
-    if (sqlDb.open("/Users/albertogotta/Documents/sqlite-tools-osx-x86-3270200/testDb.db") == -1)
+    if (sqlDb.open("testDB.db") == -1)
         std::cout << "Database opening error" << std::endl;
     else
         std::cout << "Database stored in " << sqlDb.getDbPath() << " opened" << std::endl;
 
-    std::cout << sqlDb.query("select * from tbll");
+    auto dataVector = sqlDb.query("select * from prova");
+    if (dataVector.size() != 0)
+        for (auto &i: dataVector)
+            std::cout << i << std::endl;
+    else
+        std::cout << "No query data" << std::endl;
 
     if (sqlDb.close() == -1)
         std::cout << "Database closing error" << std::endl;

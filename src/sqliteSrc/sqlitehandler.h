@@ -3,6 +3,7 @@
 
 #include "sqlite3.h"
 #include <string>
+#include <vector>
 
 typedef struct sqlite3 sqlite3;
 
@@ -16,7 +17,7 @@ public:
     int open();                                                 // Open already inserted database
     int open(const std::string &path);                          // Open database provided as argument
     std::string getDbPath();                                    // Get database path
-    std::string query(const std::string &query);                // Query database with std::string
+    std::vector<std::string> query(const std::string &query);   // Query database with std::string
     int close();                                                // Close the database
 
 private:

@@ -61,7 +61,7 @@ std::string sqliteHandler::getDbPath()
     return dbPath;
 }
 
-std::string sqliteHandler::query(const std::string &query)
+std::vector<std::string> sqliteHandler::query(const std::string &query)
 {
     // Compiled database statement handler
     sqlite3_stmt *dbStatement;
@@ -78,28 +78,31 @@ std::string sqliteHandler::query(const std::string &query)
         // Destroy statement object
         sqlite3_finalize(dbStatement);
 
-        // Return void string
-        return "";
+        // Return void vector
+        return std::vector<std::string>(0);
     }
 
     // Save number of columns
     int numCol = sqlite3_column_count(dbStatement);
 
-    // Return string
-    std::string ret;
+    // Return vector
+    std::vector<std::string> retVet;
 
     // Execute the query
     while ((errCode = sqlite3_step(dbStatement)) == SQLITE_ROW)
     {
+        // String to populate
+        std::string str;
+
         // Acquire data from all the database columns
         for (auto i = 0; i < numCol; ++i)
         {
-            ret.append(reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i)));
-            ret += "\t|\t";
+            str.append(reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i)));
+            str += "\t|\t";
         }
 
         // Add new line
-        ret += "\n";
+        retVet.push_back(str);
     }
 
     // Check for errors
@@ -111,8 +114,8 @@ std::string sqliteHandler::query(const std::string &query)
         // Destroy statement object
         sqlite3_finalize(dbStatement);
 
-        // Return void string
-        return "";
+        // Return void vector
+        return std::vector<std::string>(0);
     }
 
     // Destroy statement object
@@ -121,12 +124,12 @@ std::string sqliteHandler::query(const std::string &query)
         // Visualize error
         std::cout << "Error destroying query statement object. Error code: " << errCode << std::endl;
 
-        // Return void string
-        return "";
+        // Return void vector
+        return std::vector<std::string>(0);
     }
 
     // Return query string
-    return std::string(ret);
+    return retVet;
 }
 
 int sqliteHandler::close()
