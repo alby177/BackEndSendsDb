@@ -124,13 +124,14 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1553254712 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/main.cpp
+1554121396 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/main.cpp
 	<iostream>
-	"sqliteSrc/sqlitehandler.h"
+	"dbHandlerSrc/sqliteSrc/sqlitehandler.h"
 
-1553269885 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlitehandler.h
+1554120118 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlitehandler.h
 	"sqlite3.h"
 	<string>
+	<vector>
 
 1553248089 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlite3.h
 	<stdarg.h>
@@ -194,7 +195,87 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1553268418 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlitehandler.cpp
+1554120118 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlitehandler.cpp
 	"sqlitehandler.h"
 	<iostream>
+
+1554129844 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.cpp
+	"dbHandler.h"
+	<iostream>
+
+1553248089 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlite3.c
+	"config.h"
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<TargetConditionals.h>
+	<ctype.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	"sqlite_tcl.h"
+	"tcl.h"
+	<ctype.h>
+	"sqlite3rtree.h"
+	<ctype.h>
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<math.h>
+
+1554120118 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp
+	"sqlitehandler.h"
+	<iostream>
+
+1554130744 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.h
+	"sqlite3.h"
+	"../dbHandler.h"
+	<string>
+	<vector>
+
+1553248089 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlite3.h
+	<stdarg.h>
+
+1554130736 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.h
+	<string>
+	<vector>
 

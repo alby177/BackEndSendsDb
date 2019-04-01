@@ -42,13 +42,15 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../src/main.cpp" />
-		<Unit filename="../../src/sqliteSrc/sqlite3.c">
+		<Unit filename="../../src/dbHandlerSrc/dbHandler.cpp" />
+		<Unit filename="../../src/dbHandlerSrc/dbHandler.h" />
+		<Unit filename="../../src/dbHandlerSrc/sqliteSrc/sqlite3.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../src/sqliteSrc/sqlite3.h" />
-		<Unit filename="../../src/sqliteSrc/sqlitehandler.cpp" />
-		<Unit filename="../../src/sqliteSrc/sqlitehandler.h" />
+		<Unit filename="../../src/dbHandlerSrc/sqliteSrc/sqlite3.h" />
+		<Unit filename="../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp" />
+		<Unit filename="../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.h" />
+		<Unit filename="../../src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

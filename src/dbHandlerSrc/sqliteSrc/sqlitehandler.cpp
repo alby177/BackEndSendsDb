@@ -1,6 +1,7 @@
 #include "sqlitehandler.h"
 #include <iostream>
 
+
 sqliteHandler::sqliteHandler()
 {
 }
@@ -31,7 +32,7 @@ int sqliteHandler::open()
     }
 
     // Open database
-    int ret = sqlite3_open(dbPath.c_str(), &db);
+    int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
 
     // Check for errors
     if (ret != SQLITE_OK)
@@ -49,17 +50,6 @@ int sqliteHandler::open(const std::string &path)
     return open();
 }
 
-void sqliteHandler::addDb(const std::string &path)
-{
-    // Save db file path
-    dbPath = path;
-}
-
-std::string sqliteHandler::getDbPath()
-{
-    // Get database path
-    return dbPath;
-}
 
 std::vector<std::string> sqliteHandler::query(const std::string &query)
 {
@@ -67,7 +57,7 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
     sqlite3_stmt *dbStatement;
 
     // Prepare database query object
-    int errCode = sqlite3_prepare_v2(db, query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
+    int errCode = sqlite3_prepare_v2((struct sqlite3*) db, query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
 
     // Check for errors
     if(errCode != SQLITE_OK)
@@ -135,7 +125,7 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
 int sqliteHandler::close()
 {
     // Close the database
-    int errCode = sqlite3_close_v2(db);
+    int errCode = sqlite3_close_v2((struct sqlite3*) db);
 
     // Check for errors
     if (errCode != SQLITE_OK)

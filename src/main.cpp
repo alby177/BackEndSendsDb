@@ -1,5 +1,5 @@
 #include <iostream>
-#include "sqliteSrc/sqlitehandler.h"
+#include "dbHandlerSrc/sqliteSrc/sqlitehandler.h"
 
 int main()
 {
@@ -8,6 +8,10 @@ int main()
         std::cout << "Database opening error" << std::endl;
     else
         std::cout << "Database stored in " << sqlDb.getDbPath() << " opened" << std::endl;
+
+    sqlDb.query("create table prova(one varchar(10), two smallint)");
+    sqlDb.query("insert into prova values('ciao', 10)");
+    sqlDb.query("insert into prova values('saluti', 20)");
 
     auto dataVector = sqlDb.query("select * from prova");
     if (dataVector.size() != 0)
