@@ -5,9 +5,11 @@ CONFIG -= qt
 
 SOURCES += \
     ../../src/main.cpp \
-    ../../src/sqliteSrc/sqlite3.c \
-    ../../src/sqliteSrc/sqlitehandler.cpp
+    ../../src/dbHandlerSrc/dbHandler.cpp \
+    ../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp \
+    ../../src/dbHandlerSrc/sqliteSrc/sqlite3.c
 
 HEADERS += \
-    ../../src/sqliteSrc/sqlite3.h \
-    ../../src/sqliteSrc/sqlitehandler.h
+    ../../src/dbHandlerSrc/dbHandler.h \
+    ../../src/dbHandlerSrc/sqliteSrc/sqlite3.h \
+    ../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.h
