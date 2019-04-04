@@ -3,23 +3,25 @@
 
 #include <string>
 #include <vector>
+#include <initializer_list>
 
 class dbHandler
 {
 public:
-    dbHandler();                                                    // Default class constructor
-    dbHandler(const std::string &path);                             // Class constructor
-    virtual ~dbHandler();                                           // Class desstructor
-    void addDb(const std::string &path);                                // Add database path
-    std::string getDbPath();                                            // Get database path
+    dbHandler();                                                                    // Default class constructor
+    dbHandler(const std::string &path);                                             // Class constructor
+    virtual ~dbHandler();                                                           // Class desstructor
+    void addDb(const std::string &path);                                            // Add database path
+    std::string getDbPath();                                                        // Get database path
 
 protected:
-    virtual int open() = 0;                                                 // Open already inserted database
-    virtual int open(const std::string &path) = 0;                          // Open database provided as argument
-    virtual std::vector<std::string> query(const std::string &query) = 0;   // Query database with std::string
-    virtual int close() = 0;                                                // Close the database
-    void *db = 0;                                                   // Database object pointer
-    std::string dbPath;                                                 // Database path
+    virtual int open() = 0;                                                         // Open already inserted database
+    virtual int open(const std::string &path) = 0;                                  // Open database provided as argument
+    virtual std::vector<std::string> query(const std::string &query) = 0;           // Query database with std::string
+    virtual int createTable(std::string tableName, std::initializer_list<std::string> args) = 0;      // Create new table in the database
+    virtual int close() = 0;                                                        // Close the database
+    void *db = nullptr;                                                             // Database object pointer
+    std::string dbPath;                                                             // Database path
 };
 
 #endif // DBHANDLER_H

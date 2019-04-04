@@ -50,7 +50,6 @@ int sqliteHandler::open(const std::string &path)
     return open();
 }
 
-
 std::vector<std::string> sqliteHandler::query(const std::string &query)
 {
     // Compiled database statement handler
@@ -120,6 +119,21 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
 
     // Return query string
     return retVet;
+}
+
+int sqliteHandler::createTable(std::string tableName, std::initializer_list<std::string> args)
+{
+    std::string param {"create table " + tableName + "("};
+    for(auto &i : args)
+    {
+        param += i;
+        param += ", ";
+    }
+    param += ")";
+
+    std::cout << param << std::endl;
+    query(param);
+    return 0;
 }
 
 int sqliteHandler::close()
