@@ -16,7 +16,7 @@ public:
 protected:
     virtual int open() = 0;                                                                         // Open already inserted database
     virtual int open(const std::string &path) = 0;                                                  // Open database provided as argument
-    virtual std::vector<std::string> query(const std::string &query) = 0;                           // Query database with std::string
+    virtual int query(const std::string &query) = 0;                                                // Query database with std::string
     virtual int createTable(std::string tableName, std::vector<std::string> columns) = 0;           // Create new table in the database
     virtual int insertValues(std::string table, std::vector<std::string> values) = 0;               // Insert values inside table
     virtual std::vector<std::string> showTableValues(std::string table) = 0;                        // Show all table values

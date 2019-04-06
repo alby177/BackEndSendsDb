@@ -10,22 +10,21 @@ int main()
     else
         std::cout << "Database stored in " << sqlDb.getDbPath() << " opened" << std::endl;
 
-    //sqlDb.query("create table prova(one varchar(10), two smallint)");
-    //sqlDb.query("insert into prova values('ciao', 10)");
-    //sqlDb.query("insert into prova values('saluti', 20)");
-    sqlDb.createTable("prova", {"id integer", "name text"});
-    sqlDb.insertValues("prova", {"12", "alberto"});
+    if (sqlDb.createTable("prova", {"id integer", "name text"}) == -1)
+        return -1;
+
+    if (sqlDb.insertValues("prova", {"12", "alberto"}) == -1)
+        return -1;
+
     auto dataVector = sqlDb.showTableValues("prova");
     if (dataVector.size() != 0)
         for (auto &i: dataVector)
             std::cout << i << std::endl;
-    else
-        std::cout << "No query data" << std::endl;
 
     if (sqlDb.close() == -1)
-        std::cout << "Database closing error" << std::endl;
-    else
-        std::cout << "Database closed correctly" << std::endl;
+        return -1;
+
+    std::cout << "Database closed correctly" << std::endl;
 
     return 0;
 }

@@ -17,42 +17,11 @@ sqliteHandler::~sqliteHandler()
 {
 }
 
-int sqliteHandler::open()
+int sqliteHandler::query(const std::string &query)
 {
-    // Check for db file path
-    if (dbPath.size() == 0)
-    {
-        std::cout << "Error: Invalid Database path inserted" << std::endl;
-        return -1;
-    }
-    else if (dbPath.find(".db") == std::string::npos)
-    {
-        std::cout << "Error: No database extension inserted" << std::endl;
-        return -1;
-    }
+    // Reset query text
+    queryResult.clear();
 
-    // Open database
-    int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
-    //int ret = sqlite3_open(dbPath.c_str(), static_cast<sqlite3**>(&db));
-
-    // Check for errors
-    if (ret != SQLITE_OK)
-        return -1;
-    else
-        return 0;
-}
-
-int sqliteHandler::open(const std::string &path)
-{
-    // Save db file path
-    dbPath = path;
-
-    // Open db file
-    return open();
-}
-
-std::vector<std::string> sqliteHandler::query(const std::string &query)
-{
     // Compiled database statement handler
     sqlite3_stmt *dbStatement;
 
@@ -69,7 +38,7 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
         sqlite3_finalize(dbStatement);
 
         // Return void vector
-        return std::vector<std::string>(0);
+        return -1;
     }
 
     // Save number of columns
@@ -105,7 +74,7 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
         sqlite3_finalize(dbStatement);
 
         // Return void vector
-        return std::vector<std::string>(0);
+        return -1;
     }
 
     // Destroy statement object
@@ -115,11 +84,14 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
         std::cout << "Error destroying query statement object. Error code: " << errCode << std::endl;
 
         // Return void vector
-        return std::vector<std::string>(0);
+        return -1;
     }
 
-    // Return query string
-    return retVet;
+    // Save text returned from query
+    queryResult = retVet;
+
+    // Return no error value
+    return 0;
 }
 
 bool sqliteHandler::isNumber(std::string text)
@@ -134,17 +106,47 @@ bool sqliteHandler::isNumber(std::string text)
     return true;
 }
 
-int sqliteHandler::createTable(std::string tableName, std::vector<std::string> columns)
+int sqliteHandler::open()
 {
+    // Check for db file path
+    if (dbPath.size() == 0)
+    {
+        std::cout << "Error: Invalid Database path inserted" << std::endl;
+        return -1;
+    }
+    else if (dbPath.find(".db") == std::string::npos)
+    {
+        std::cout << "Error: No database extension inserted" << std::endl;
+        return -1;
+    }
 
-    /*  -------------
-     *  TO DO
-     *
-     * Check for table already created
-        ------------- */
+    // Open database
+    int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
+    //int ret = sqlite3_open(dbPath.c_str(), static_cast<sqlite3**>(&db));
 
+    // Check for errors
+    if (ret != SQLITE_OK)
+    {
+        std::cout << "Error opening database" << std::endl;
+        return -1;
+    }
+    else
+        return 0;
+}
+
+int sqliteHandler::open(const std::string &path)
+{
+    // Save db file path
+    dbPath = path;
+
+    // Open db file
+    return open();
+}
+
+int sqliteHandler::createTable(std::string table, std::vector<std::string> columns)
+{
     // Set basic create table query command string
-    std::string arg {"create table " + tableName + " ("};
+    std::string arg {"create table if not exists " + table + " ("};
 
     // Iterate on column passed as arguments
     for(auto &i : columns)
@@ -158,8 +160,13 @@ int sqliteHandler::createTable(std::string tableName, std::vector<std::string> c
     arg.erase(arg.length() - 2, 2) += std::string(");");
 
     // Execute query
-    query(arg);
-    return 0;
+    if (query(arg) == 0)
+        return 0;
+    else
+    {
+        std::cout << "Cannot create table with name " << table << " inside database " << dbPath << std::endl;
+        return -1;
+    }
 }
 
 int sqliteHandler::insertValues(std::string table, std::vector<std::string> values)
@@ -181,11 +188,14 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> valu
     // Remove last comma and add closing parenthesis
     arg.erase(arg.length() - 2, 2) += std::string(");");
 
-    std::cout << arg << std::endl;
-
     // Execute query
-    query(arg);
-    return 0;
+    if (query(arg) == 0)
+        return 0;
+    else
+    {
+        std::cout << "Cannot insert values inside table with name " << table << " of database " << dbPath << std::endl;
+        return -1;
+    }
 }
 
 int sqliteHandler::insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values)
@@ -199,7 +209,15 @@ std::vector<std::string> sqliteHandler::showTableValues(std::string table)
     std::string arg {"select * from " + table + ";"};
 
     // Execute query
-    return query(arg);
+    if (query(arg) != -1)
+
+        // Return table values
+        return queryResult;
+    else
+    {
+      std::cout << "Error accessing data of table " << table << " of database " << dbPath << std::endl;
+      return std::vector<std::string> {};
+    }
 }
 
 int sqliteHandler::close()
@@ -216,7 +234,6 @@ int sqliteHandler::close()
         // Return void string
         return -1;
     }
-
     return 0;
 }
 

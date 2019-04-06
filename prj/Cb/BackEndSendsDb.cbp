@@ -18,7 +18,6 @@
 				</Compiler>
 				<Linker>
 					<Add library="pthread" />
-					<Add library="dl" />
 				</Linker>
 			</Target>
 			<Target title="Release">
