@@ -9,15 +9,17 @@ class dbHandler
 public:
     dbHandler();                                                                                    // Default class constructor
     dbHandler(const std::string &path);                                                             // Class constructor
-    virtual ~dbHandler();                                                                           // Class desstructor
+    virtual ~dbHandler();                                                                           // Class destructor
     void addDb(const std::string &path);                                                            // Add database path
     std::string getDbPath();                                                                        // Get database path
 
+
 protected:
+    int open(const std::string &path);                                                              // Open database provided as argument
     virtual int open() = 0;                                                                         // Open already inserted database
-    virtual int open(const std::string &path) = 0;                                                  // Open database provided as argument
     virtual int query(const std::string &query) = 0;                                                // Query database with std::string
-    virtual int createTable(std::string tableName, std::vector<std::string> columns) = 0;           // Create new table in the database
+    virtual int createTable(std::string table, std::vector<std::string> columns) = 0;               // Create new table in the database
+    virtual int deleteTable(std::string table) = 0;                                                 // Delete table in the database
     virtual int insertValues(std::string table, std::vector<std::string> values) = 0;               // Insert values inside table
     virtual std::vector<std::string> showTableValues(std::string table) = 0;                        // Show all table values
     virtual int close() = 0;                                                                        // Close the database

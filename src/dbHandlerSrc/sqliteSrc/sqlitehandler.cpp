@@ -127,20 +127,18 @@ int sqliteHandler::open()
     // Check for errors
     if (ret != SQLITE_OK)
     {
-        std::cout << "Error opening database" << std::endl;
+        std::cout << "Error opening database " << dbPath << std::endl;
         return -1;
     }
-    else
-        return 0;
+
+    std::cout << "Opened database " << dbPath << std::endl;
+    return 0;
 }
 
 int sqliteHandler::open(const std::string &path)
 {
-    // Save db file path
-    dbPath = path;
-
-    // Open db file
-    return open();
+    // Call base class open method
+    dbHandler::open(path);
 }
 
 int sqliteHandler::createTable(std::string table, std::vector<std::string> columns)
@@ -160,13 +158,26 @@ int sqliteHandler::createTable(std::string table, std::vector<std::string> colum
     arg.erase(arg.length() - 2, 2) += std::string(");");
 
     // Execute query
-    if (query(arg) == 0)
-        return 0;
+    int res = query(arg);
+    if (res == 0)
+        std::cout << "Created table with name " << table << " inside database " << dbPath << std::endl;
     else
-    {
         std::cout << "Cannot create table with name " << table << " inside database " << dbPath << std::endl;
-        return -1;
-    }
+    return res;
+}
+
+int sqliteHandler::deleteTable(std::string table)
+{
+    // Set basic delete table query command string
+    std::string arg {"drop table if exists " + table + ";"};
+
+    // Execute query
+    int res = query(arg);
+    if (res == 0)
+        std::cout << "Deleted table with name " << table << " inside database " << dbPath << std::endl;
+    else
+        std::cout << "Cannot delete table with name " << table << " inside database " << dbPath << std::endl;
+    return res;
 }
 
 int sqliteHandler::insertValues(std::string table, std::vector<std::string> values)
@@ -189,13 +200,12 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> valu
     arg.erase(arg.length() - 2, 2) += std::string(");");
 
     // Execute query
-    if (query(arg) == 0)
-        return 0;
+    int res = query(arg);
+    if (res == 0)
+        std::cout << "Inserted values inside table with name " << table << " of database " << dbPath << std::endl;
     else
-    {
         std::cout << "Cannot insert values inside table with name " << table << " of database " << dbPath << std::endl;
-        return -1;
-    }
+    return res;
 }
 
 int sqliteHandler::insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values)
@@ -234,6 +244,8 @@ int sqliteHandler::close()
         // Return void string
         return -1;
     }
+
+    std::cout << "Closed database " << dbPath << std::endl;
     return 0;
 }
 

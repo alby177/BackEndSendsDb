@@ -58,7 +58,7 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554567723 source:d:\alby\programming\c++\backendsendsdb\src\main.cpp
+1554583667 source:d:\alby\programming\c++\backendsendsdb\src\main.cpp
 	<iostream>
 	<vector>
 	"dbHandlerSrc/sqliteSrc/sqlitehandler.h"
@@ -280,11 +280,11 @@
 	<string>
 	<vector>
 
-1554562984 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\dbhandler.cpp
+1554581723 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\dbhandler.cpp
 	"dbHandler.h"
 	<iostream>
 
-1554566363 d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\dbhandler.h
+1554583210 d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\dbhandler.h
 	<string>
 	<vector>
 
@@ -347,11 +347,11 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554567805 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.cpp
+1554583772 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.cpp
 	"sqlitehandler.h"
 	<iostream>
 
-1554567299 d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.h
+1554583223 d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.h
 	"sqlite3.h"
 	"../dbHandler.h"
 	<string>

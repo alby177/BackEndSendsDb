@@ -6,9 +6,7 @@ int main()
 {
     sqliteHandler sqlDb;
     if (sqlDb.open("testDB.db") == -1)
-        std::cout << "Database opening error" << std::endl;
-    else
-        std::cout << "Database stored in " << sqlDb.getDbPath() << " opened" << std::endl;
+        return -1;
 
     if (sqlDb.createTable("prova", {"id integer", "name text"}) == -1)
         return -1;
@@ -21,10 +19,11 @@ int main()
         for (auto &i: dataVector)
             std::cout << i << std::endl;
 
-    if (sqlDb.close() == -1)
+    if(sqlDb.deleteTable("prova") == -1)
         return -1;
 
-    std::cout << "Database closed correctly" << std::endl;
+    if (sqlDb.close() == -1)
+        return -1;
 
     return 0;
 }

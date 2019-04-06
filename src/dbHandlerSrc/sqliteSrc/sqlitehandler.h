@@ -15,13 +15,14 @@ public:
     sqliteHandler();                                                    // Default class constructor
     sqliteHandler(const std::string &path);                             // Class constructor
     ~sqliteHandler();                                                   // Class desstructor
-    int open();                                                         // Open already inserted database
+    int open() override;                                                         // Open already inserted database
     int open(const std::string &path);                                  // Open database provided as argument
-    int createTable(std::string table, std::vector<std::string> columns);      // Create new table in the database
-    int insertValues(std::string table, std::vector<std::string> values);
+    int createTable(std::string table, std::vector<std::string> columns) override;      // Create new table in the database
+    int deleteTable(std::string table) override;
+    int insertValues(std::string table, std::vector<std::string> values) override;
     int insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values);
-    std::vector<std::string> showTableValues(std::string table);
-    int close();                                                        // Close the database
+    std::vector<std::string> showTableValues(std::string table) override;
+    int close() override;                                                        // Close the database
 
 private:
 
