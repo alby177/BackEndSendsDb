@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "dbHandlerSrc/sqliteSrc/sqlitehandler.h"
 
 int main()
@@ -12,14 +13,14 @@ int main()
     //sqlDb.query("create table prova(one varchar(10), two smallint)");
     //sqlDb.query("insert into prova values('ciao', 10)");
     //sqlDb.query("insert into prova values('saluti', 20)");
-    sqlDb.createTable("prova", {"varchar(10)", "smallint"});
-
-//    auto dataVector = sqlDb.query("select * from prova");
-//    if (dataVector.size() != 0)
-//        for (auto &i: dataVector)
-//            std::cout << i << std::endl;
-//    else
-//        std::cout << "No query data" << std::endl;
+    sqlDb.createTable("prova", {"id integer", "name text"});
+    sqlDb.insertValues("prova", {"12", "alberto"});
+    auto dataVector = sqlDb.showTableValues("prova");
+    if (dataVector.size() != 0)
+        for (auto &i: dataVector)
+            std::cout << i << std::endl;
+    else
+        std::cout << "No query data" << std::endl;
 
     if (sqlDb.close() == -1)
         std::cout << "Database closing error" << std::endl;

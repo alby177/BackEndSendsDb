@@ -33,6 +33,7 @@ int sqliteHandler::open()
 
     // Open database
     int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
+    //int ret = sqlite3_open(dbPath.c_str(), static_cast<sqlite3**>(&db));
 
     // Check for errors
     if (ret != SQLITE_OK)
@@ -87,7 +88,7 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
         for (auto i = 0; i < numCol; ++i)
         {
             str.append(reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i)));
-            str += "\t|\t";
+            str += "|";
         }
 
         // Add new line
@@ -121,19 +122,84 @@ std::vector<std::string> sqliteHandler::query(const std::string &query)
     return retVet;
 }
 
-int sqliteHandler::createTable(std::string tableName, std::initializer_list<std::string> args)
+bool sqliteHandler::isNumber(std::string text)
 {
-    std::string param {"create table " + tableName + "("};
-    for(auto &i : args)
+    // Iterate on the string
+    for (auto &i: text)
     {
-        param += i;
-        param += ", ";
+        // Check for integers or floating
+        if (!std::isdigit(i) && !(i == '.') && !(i == '-'))
+            return false;
     }
-    param += ")";
+    return true;
+}
 
-    std::cout << param << std::endl;
-    query(param);
+int sqliteHandler::createTable(std::string tableName, std::vector<std::string> columns)
+{
+
+    /*  -------------
+     *  TO DO
+     *
+     * Check for table already created
+        ------------- */
+
+    // Set basic create table query command string
+    std::string arg {"create table " + tableName + " ("};
+
+    // Iterate on column passed as arguments
+    for(auto &i : columns)
+    {
+        // Add column
+        arg += i;
+        arg += ", ";
+    }
+
+    // Remove last comma and add closing parenthesis
+    arg.erase(arg.length() - 2, 2) += std::string(");");
+
+    // Execute query
+    query(arg);
     return 0;
+}
+
+int sqliteHandler::insertValues(std::string table, std::vector<std::string> values)
+{
+    // Set basic insert query command string
+    std::string arg {"insert into " + table + " values ("};
+
+    // Iterate on column passed as arguments
+    for(auto &i : values)
+    {
+        // Check for text
+        if (isNumber(i))
+            arg += std::string(i);
+        else
+            arg += std::string("'" + i + "'");
+        arg += ", ";
+    }
+
+    // Remove last comma and add closing parenthesis
+    arg.erase(arg.length() - 2, 2) += std::string(");");
+
+    std::cout << arg << std::endl;
+
+    // Execute query
+    query(arg);
+    return 0;
+}
+
+int sqliteHandler::insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values)
+{
+
+}
+
+std::vector<std::string> sqliteHandler::showTableValues(std::string table)
+{
+    // Prepare query argument
+    std::string arg {"select * from " + table + ";"};
+
+    // Execute query
+    return query(arg);
 }
 
 int sqliteHandler::close()
