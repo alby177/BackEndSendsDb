@@ -14,6 +14,9 @@ int main()
     if (sqlDb.insertValues("prova", {"12", "alberto"}) == -1)
         return -1;
 
+    if (sqlDb.insertValues("prova", {"name"}, {"angelo", "francesco"}) == -1)
+        return -1;
+
     auto dataVector = sqlDb.showTableValues("prova");
     if (dataVector.size() != 0)
         for (auto &i: dataVector)

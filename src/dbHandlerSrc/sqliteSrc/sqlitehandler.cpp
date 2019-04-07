@@ -56,7 +56,14 @@ int sqliteHandler::query(const std::string &query)
         // Acquire data from all the database columns
         for (auto i = 0; i < numCol; ++i)
         {
-            str.append(reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i)));
+            // Save data from table column
+            const char *data = reinterpret_cast<const char*>(sqlite3_column_text(dbStatement, i));
+
+            // Check for data
+            if (data == nullptr)
+                str.append("");
+            else
+                str.append(data);
             str += "|";
         }
 
@@ -138,7 +145,7 @@ int sqliteHandler::open()
 int sqliteHandler::open(const std::string &path)
 {
     // Call base class open method
-    dbHandler::open(path);
+    return dbHandler::open(path);
 }
 
 int sqliteHandler::createTable(std::string table, std::vector<std::string> columns)
@@ -210,7 +217,44 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> valu
 
 int sqliteHandler::insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values)
 {
+    // Set basic insert query command string
+    std::string arg {"insert into " + table + " ("};
 
+    // Add columns
+    for (auto &i: columns)
+    {
+        arg += i;
+        arg += ", ";
+    }
+
+    // Remove last comma and add values
+    arg.erase(arg.length() - 2, 2) += std::string(") values ");
+
+    // Add values
+    for(auto &i : values)
+    {
+        arg += "(";
+
+        // Check for text
+        if (isNumber(i))
+            arg += std::string(i);
+        else
+            arg += std::string("'" + i + "'");
+        arg += "), ";
+    }
+
+    // Remove last comma and add closing parenthesis
+    arg.erase(arg.length() - 2, 2) += std::string(";");
+
+    std::cout << arg << std::endl;
+
+    // Execute query
+    int res = query(arg);
+    if (res == 0)
+        std::cout << "Inserted values inside table with name " << table << " of database " << dbPath << std::endl;
+    else
+        std::cout << "Cannot insert values inside table with name " << table << " of database " << dbPath << std::endl;
+    return res;
 }
 
 std::vector<std::string> sqliteHandler::showTableValues(std::string table)

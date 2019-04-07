@@ -58,7 +58,7 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554583667 source:d:\alby\programming\c++\backendsendsdb\src\main.cpp
+1554671856 source:d:\alby\programming\c++\backendsendsdb\src\main.cpp
 	<iostream>
 	<vector>
 	"dbHandlerSrc/sqliteSrc/sqlitehandler.h"
@@ -347,7 +347,7 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554583772 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.cpp
+1554673619 source:d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlitehandler.cpp
 	"sqlitehandler.h"
 	<iostream>
 
