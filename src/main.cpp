@@ -17,7 +17,7 @@ int main()
     if (sqlDb.insertValues("prova", {"name"}, {"angelo", "francesco"}) == -1)
         return -1;
 
-    auto dataVector = sqlDb.showTableValues("prova");
+    auto dataVector = sqlDb.showTableValues("prova", {"name"});
     if (dataVector.size() != 0)
         for (auto &i: dataVector)
             std::cout << i << std::endl;

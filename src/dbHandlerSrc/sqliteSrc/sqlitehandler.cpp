@@ -246,8 +246,6 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> colu
     // Remove last comma and add closing parenthesis
     arg.erase(arg.length() - 2, 2) += std::string(";");
 
-    std::cout << arg << std::endl;
-
     // Execute query
     int res = query(arg);
     if (res == 0)
@@ -261,6 +259,38 @@ std::vector<std::string> sqliteHandler::showTableValues(std::string table)
 {
     // Prepare query argument
     std::string arg {"select * from " + table + ";"};
+
+    // Execute query
+    if (query(arg) != -1)
+
+        // Return table values
+        return queryResult;
+    else
+    {
+      std::cout << "Error accessing data of table " << table << " of database " << dbPath << std::endl;
+      return std::vector<std::string> {};
+    }
+}
+
+std::vector<std::string> sqliteHandler::showTableValues(std::string table, std::vector<std::string> columns)
+{
+    // Prepare query argument
+    std::string arg {"select "};
+
+    // Iterate on columns
+    for (auto &i: columns)
+    {
+        // Add columns name
+        arg += i;
+        arg += ", ";
+    }
+
+    // Remove last comma and add closing parenthesis
+    arg.erase(arg.length() - 2, 2) += std::string(" from ");
+
+    // Add rest table and terminator
+    arg += table;
+    arg += ";";
 
     // Execute query
     if (query(arg) != -1)
