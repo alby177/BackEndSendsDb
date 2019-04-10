@@ -6,6 +6,11 @@ struct errStruct
 {
     int errCode;
     std::string errString;
+
+public:
+    void operator<< (const std::string &in) {errString = in;};
+    void operator<< (const char *in) {errString = *in;};
+    void operator<< (int &in) {errCode = in;};
 };
 
 #endif // COMMONSTRUCTURES_H

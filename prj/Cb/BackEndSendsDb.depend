@@ -125,8 +125,9 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554121396 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/main.cpp
+1554894788 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/main.cpp
 	<iostream>
+	<vector>
 	"dbHandlerSrc/sqliteSrc/sqlitehandler.h"
 
 1554120118 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/sqliteSrc/sqlitehandler.h
@@ -200,7 +201,7 @@
 	"sqlitehandler.h"
 	<iostream>
 
-1554129844 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.cpp
+1554898275 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.cpp
 	"dbHandler.h"
 	<iostream>
 
@@ -263,11 +264,11 @@
 	<unicode/utf16.h>
 	<math.h>
 
-1554120118 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp
+1554898702 source:/home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp
 	"sqlitehandler.h"
 	<iostream>
 
-1554130744 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.h
+1554898702 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlitehandler.h
 	"sqlite3.h"
 	"../dbHandler.h"
 	<string>
@@ -276,7 +277,8 @@
 1553248089 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/sqliteSrc/sqlite3.h
 	<stdarg.h>
 
-1554130736 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.h
+1554898274 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/dbHandler.h
+	"commonstructures.h"
 	<string>
 	<vector>
 
@@ -359,4 +361,7 @@
 
 1554562984 d:\alby\programming\c++\backendsendsdb\src\dbhandlersrc\sqlitesrc\sqlite3.h
 	<stdarg.h>
+
+1554897662 /home/a-gotta/Desktop/Programming/c++/BackEndSendsDb/src/dbHandlerSrc/commonstructures.h
+	<string>
 

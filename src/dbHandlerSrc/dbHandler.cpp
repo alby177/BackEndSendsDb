@@ -1,20 +1,6 @@
 #include "dbHandler.h"
 #include <iostream>
 
-dbHandler::dbHandler()
-{
-}
-
-dbHandler::~dbHandler()
-{
-}
-
-dbHandler::dbHandler(const std::string &path)
-{
-    // Save user path string
-    dbPath = path;
-}
-
 int dbHandler::open(const std::string &path)
 {
     // Save db file path
@@ -30,7 +16,7 @@ void dbHandler::addDb(const std::string &path)
     dbPath = path;
 }
 
-std::string dbHandler::getDbPath()
+std::string dbHandler::getDbPath() const
 {
     // Get database path
     return dbPath;

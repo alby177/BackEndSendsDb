@@ -32,8 +32,13 @@ int sqliteHandler::query(const std::string &query, std::vector<std::string> *ret
     // Check for errors
     if(errCode != SQLITE_OK)
     {
-        // Save error error
-        std::cout << "Error translating the query to send to the database. Error code: " << errCode << std::endl;
+        // Check for allocated error structure
+        if (err != nullptr)
+        {
+            // Save error error
+            *err << "Error translating the query to send to the database";
+            *err << errCode;
+        }
 
         // Destroy statement object
         sqlite3_finalize(dbStatement);
@@ -73,8 +78,13 @@ int sqliteHandler::query(const std::string &query, std::vector<std::string> *ret
     // Check for errors
     if(errCode != SQLITE_DONE)
     {
-        // Print error
-        std::cout << "Error sending the query to the database. Error code: " << errCode << std::endl;
+        // Check for allocated error structure
+        if (err != nullptr)
+        {
+            // Save error error
+            *err << "Error sending the query to the database";
+            *err << errCode;
+        }
 
         // Destroy statement object
         sqlite3_finalize(dbStatement);
@@ -86,10 +96,15 @@ int sqliteHandler::query(const std::string &query, std::vector<std::string> *ret
     // Destroy statement object
     if (sqlite3_finalize(dbStatement) != SQLITE_OK)
     {
-        // Visualize error
-        std::cout << "Error destroying query statement object. Error code: " << errCode << std::endl;
+        // Check for allocated error structure
+        if (err != nullptr)
+        {
+            // Save error error
+            *err << "Error destroying query statement object";
+            *err << errCode;
+        }
 
-        // Return void vector
+        // Return error code
         return -1;
     }
 
@@ -144,7 +159,7 @@ int sqliteHandler::open(const std::string &path)
     return dbHandler::open(path);
 }
 
-int sqliteHandler::createTable(std::string table, std::vector<std::string> columns)
+int sqliteHandler::createTable(const std::string &table, const std::vector<std::string> &columns)
 {
     // Set basic create table query command string
     std::string arg {"create table if not exists " + table + " ("};
@@ -169,7 +184,7 @@ int sqliteHandler::createTable(std::string table, std::vector<std::string> colum
     return res;
 }
 
-int sqliteHandler::deleteTable(std::string table)
+int sqliteHandler::deleteTable(const std::string &table)
 {
     // Set basic delete table query command string
     std::string arg {"drop table if exists " + table + ";"};
@@ -183,7 +198,7 @@ int sqliteHandler::deleteTable(std::string table)
     return res;
 }
 
-int sqliteHandler::insertValues(std::string table, std::vector<std::string> values)
+int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &values)
 {
     // Set basic insert query command string
     std::string arg {"insert into " + table + " values ("};
@@ -211,7 +226,7 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> valu
     return res;
 }
 
-int sqliteHandler::insertValues(std::string table, std::vector<std::string> columns, std::vector<std::string> values)
+int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &columns, const std::vector<std::string> &values)
 {
     // Set basic insert query command string
     std::string arg {"insert into " + table + " ("};
@@ -251,7 +266,7 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> colu
     return res;
 }
 
-int sqliteHandler::showTableValues(std::string table, std::vector<std::string> *retVec, errStruct *err)
+int sqliteHandler::showTableValues(const std::string &table, std::vector<std::string> *retVec, errStruct *err)
 {
     // Prepare query argument
     std::string arg {"select * from " + table + ";"};
@@ -260,7 +275,7 @@ int sqliteHandler::showTableValues(std::string table, std::vector<std::string> *
     return query(arg, retVec, err);
 }
 
-int sqliteHandler::showTableValues(std::string table, std::vector<std::string> columns, std::vector<std::string> *retVec, errStruct *err)
+int sqliteHandler::showTableValues(const std::string &table, const std::vector<std::string> &columns, std::vector<std::string> *retVec, errStruct *err)
 {
     // Prepare query argument
     std::string arg {"select "};

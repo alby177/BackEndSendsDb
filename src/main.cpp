@@ -4,9 +4,9 @@
 
 int main()
 {
-//    sqliteHandler sqlDb;
-//    if (sqlDb.open("testDB.db") == -1)
-//        return -1;
+    sqliteHandler sqlDb;
+    if (sqlDb.open("testDB.db") == -1)
+        return -1;
 
 //    if (sqlDb.createTable("prova", {"id integer", "name text"}) == -1)
 //        return -1;
