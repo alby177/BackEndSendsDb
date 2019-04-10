@@ -17,10 +17,11 @@ sqliteHandler::~sqliteHandler()
 {
 }
 
-int sqliteHandler::query(const std::string &query)
+int sqliteHandler::query(const std::string &query, std::vector<std::string> *retVec, errStruct *err)
 {
     // Reset query text
-    queryResult.clear();
+    if (retVec != nullptr)
+        retVec->clear();
 
     // Compiled database statement handler
     sqlite3_stmt *dbStatement;
@@ -31,7 +32,7 @@ int sqliteHandler::query(const std::string &query)
     // Check for errors
     if(errCode != SQLITE_OK)
     {
-        // Print error
+        // Save error error
         std::cout << "Error translating the query to send to the database. Error code: " << errCode << std::endl;
 
         // Destroy statement object
@@ -43,9 +44,6 @@ int sqliteHandler::query(const std::string &query)
 
     // Save number of columns
     int numCol = sqlite3_column_count(dbStatement);
-
-    // Return vector
-    std::vector<std::string> retVet;
 
     // Execute the query
     while ((errCode = sqlite3_step(dbStatement)) == SQLITE_ROW)
@@ -68,7 +66,8 @@ int sqliteHandler::query(const std::string &query)
         }
 
         // Add new line
-        retVet.push_back(str);
+        if (retVec != nullptr)
+            retVec->push_back(str);
     }
 
     // Check for errors
@@ -93,9 +92,6 @@ int sqliteHandler::query(const std::string &query)
         // Return void vector
         return -1;
     }
-
-    // Save text returned from query
-    queryResult = retVet;
 
     // Return no error value
     return 0;
@@ -255,24 +251,16 @@ int sqliteHandler::insertValues(std::string table, std::vector<std::string> colu
     return res;
 }
 
-std::vector<std::string> sqliteHandler::showTableValues(std::string table)
+int sqliteHandler::showTableValues(std::string table, std::vector<std::string> *retVec, errStruct *err)
 {
     // Prepare query argument
     std::string arg {"select * from " + table + ";"};
 
     // Execute query
-    if (query(arg) != -1)
-
-        // Return table values
-        return queryResult;
-    else
-    {
-      std::cout << "Error accessing data of table " << table << " of database " << dbPath << std::endl;
-      return std::vector<std::string> {};
-    }
+    return query(arg, retVec, err);
 }
 
-std::vector<std::string> sqliteHandler::showTableValues(std::string table, std::vector<std::string> columns)
+int sqliteHandler::showTableValues(std::string table, std::vector<std::string> columns, std::vector<std::string> *retVec, errStruct *err)
 {
     // Prepare query argument
     std::string arg {"select "};
@@ -293,15 +281,7 @@ std::vector<std::string> sqliteHandler::showTableValues(std::string table, std::
     arg += ";";
 
     // Execute query
-    if (query(arg) != -1)
-
-        // Return table values
-        return queryResult;
-    else
-    {
-      std::cout << "Error accessing data of table " << table << " of database " << dbPath << std::endl;
-      return std::vector<std::string> {};
-    }
+    return query(arg, retVec, err);
 }
 
 int sqliteHandler::close()

@@ -12,4 +12,5 @@ SOURCES += \
 HEADERS += \
     ../../src/dbHandlerSrc/dbHandler.h \
     ../../src/dbHandlerSrc/sqliteSrc/sqlite3.h \
-    ../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.h
+    ../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.h \
+    ../../src/dbHandlerSrc/commonstructures.h
