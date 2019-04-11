@@ -124,17 +124,27 @@ bool sqliteHandler::isNumber(std::string text)
     return true;
 }
 
-int sqliteHandler::open()
+int sqliteHandler::open(ErrStruct *err)
 {
     // Check for db file path
     if (dbPath.size() == 0)
     {
-        std::cout << "Error: Invalid Database path inserted" << std::endl;
+        // Check for allocated error structure
+        if(err != nullptr)
+        {
+            *err << "Invalid Database path inserted";
+            *err << errCodInvPath;
+        }
         return -1;
     }
     else if (dbPath.find(".db") == std::string::npos)
     {
-        std::cout << "Error: No database extension inserted" << std::endl;
+        // Check for allocated error structure
+        if(err != nullptr)
+        {
+            *err << "No database extension inserted";
+            *err << errCodNoDbEx;
+        }
         return -1;
     }
 
@@ -145,21 +155,24 @@ int sqliteHandler::open()
     // Check for errors
     if (ret != SQLITE_OK)
     {
-        std::cout << "Error opening database " << dbPath << std::endl;
+        // Check for allocated error structure
+        if(err != nullptr)
+        {
+            *err << "Error opening database " + dbPath;
+            *err << errCodDbOpen;
+        }
         return -1;
     }
-
-    std::cout << "Opened database " << dbPath << std::endl;
     return 0;
 }
 
-int sqliteHandler::open(const std::string &path)
+int sqliteHandler::open(const std::string &path, ErrStruct *err)
 {
     // Call base class open method
-    return dbHandler::open(path);
+    return dbHandler::open(path, err);
 }
 
-int sqliteHandler::createTable(const std::string &table, const std::vector<std::string> &columns)
+int sqliteHandler::createTable(const std::string &table, const std::vector<std::string> &columns, ErrStruct *err)
 {
     // Set basic create table query command string
     std::string arg {"create table if not exists " + table + " ("};
@@ -177,28 +190,37 @@ int sqliteHandler::createTable(const std::string &table, const std::vector<std::
 
     // Execute query
     int res = query(arg);
-    if (res == 0)
-        std::cout << "Created table with name " << table << " inside database " << dbPath << std::endl;
-    else
-        std::cout << "Cannot create table with name " << table << " inside database " << dbPath << std::endl;
+    if (res != 0)
+    {
+        // Check for allocated error structure
+        if(err != nullptr)
+        {
+            *err << "Cannot create table with name " + table + " inside database " + dbPath;
+            *err << errCodTableCreate;
+        }
+    }
     return res;
 }
 
-int sqliteHandler::deleteTable(const std::string &table)
+int sqliteHandler::deleteTable(const std::string &table, ErrStruct *err)
 {
     // Set basic delete table query command string
     std::string arg {"drop table if exists " + table + ";"};
 
     // Execute query
     int res = query(arg);
-    if (res == 0)
-        std::cout << "Deleted table with name " << table << " inside database " << dbPath << std::endl;
-    else
-        std::cout << "Cannot delete table with name " << table << " inside database " << dbPath << std::endl;
+    if (res != 0)
+
+    // Check for allocated error structure
+    if(err != nullptr)
+    {
+        *err << "Cannot delete table with name " + table + " inside database " + dbPath;
+        *err << errCodDeleteTable;
+    }
     return res;
 }
 
-int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &values)
+int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &values, ErrStruct *err)
 {
     // Set basic insert query command string
     std::string arg {"insert into " + table + " values ("};
@@ -226,7 +248,7 @@ int sqliteHandler::insertValues(const std::string &table, const std::vector<std:
     return res;
 }
 
-int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &columns, const std::vector<std::string> &values)
+int sqliteHandler::insertValues(const std::string &table, const std::vector<std::string> &columns, const std::vector<std::string> &values, ErrStruct *err)
 {
     // Set basic insert query command string
     std::string arg {"insert into " + table + " ("};
@@ -299,7 +321,7 @@ int sqliteHandler::showTableValues(const std::string &table, const std::vector<s
     return query(arg, retVec, err);
 }
 
-int sqliteHandler::close()
+int sqliteHandler::close(ErrStruct *err)
 {
     // Close the database
     int errCode = sqlite3_close_v2((struct sqlite3*) db);
@@ -308,13 +330,12 @@ int sqliteHandler::close()
     if (errCode != SQLITE_OK)
     {
         // Visualize error
-        std::cout << "Error closing the database. Error code: " << errCode << std::endl;
+        *err << "Error closing the database";
+        *err << errCodeDbClose;
 
-        // Return void string
+        // Return error flag
         return -1;
     }
-
-    std::cout << "Closed database " << dbPath << std::endl;
     return 0;
 }
 

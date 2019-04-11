@@ -1,13 +1,23 @@
 #include "dbHandler.h"
 #include <iostream>
 
-int dbHandler::open(const std::string &path)
+dbHandler::dbHandler()
+{
+
+}
+
+dbHandler::~dbHandler()
+{
+
+}
+
+int dbHandler::open(const std::string &path, ErrStruct *err)
 {
     // Save db file path
     dbPath = path;
 
     // Open db file
-    return open();
+    return open(err);
 }
 
 void dbHandler::addDb(const std::string &path)
