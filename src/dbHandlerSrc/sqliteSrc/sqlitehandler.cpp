@@ -17,7 +17,7 @@ sqliteHandler::~sqliteHandler()
 {
 }
 
-int sqliteHandler::query(const std::string &query, std::vector<std::string> *retVec, errStruct *err)
+int sqliteHandler::query(const std::string &query, std::vector<std::string> *retVec, ErrStruct *err)
 {
     // Reset query text
     if (retVec != nullptr)
@@ -266,7 +266,7 @@ int sqliteHandler::insertValues(const std::string &table, const std::vector<std:
     return res;
 }
 
-int sqliteHandler::showTableValues(const std::string &table, std::vector<std::string> *retVec, errStruct *err)
+int sqliteHandler::showTableValues(const std::string &table, std::vector<std::string> *retVec, ErrStruct *err)
 {
     // Prepare query argument
     std::string arg {"select * from " + table + ";"};
@@ -275,7 +275,7 @@ int sqliteHandler::showTableValues(const std::string &table, std::vector<std::st
     return query(arg, retVec, err);
 }
 
-int sqliteHandler::showTableValues(const std::string &table, const std::vector<std::string> &columns, std::vector<std::string> *retVec, errStruct *err)
+int sqliteHandler::showTableValues(const std::string &table, const std::vector<std::string> &columns, std::vector<std::string> *retVec, ErrStruct *err)
 {
     // Prepare query argument
     std::string arg {"select "};
