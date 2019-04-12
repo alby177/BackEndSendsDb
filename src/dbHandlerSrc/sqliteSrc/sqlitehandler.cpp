@@ -27,7 +27,9 @@ int sqliteHandler::query(const std::string &query, std::vector<std::string> *ret
     sqlite3_stmt *dbStatement;
 
     // Prepare database query object
-    int errCode = sqlite3_prepare_v2((struct sqlite3*) db, query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
+    //int errCode = sqlite3_prepare_v2((struct sqlite3*) db, query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
+    int errCode = sqlite3_prepare_v2(reinterpret_cast<sqlite3*>(db), query.c_str(), static_cast<int>(query.size()), &dbStatement, nullptr);
+
 
     // Check for errors
     if(errCode != SQLITE_OK)
@@ -149,8 +151,8 @@ int sqliteHandler::open(ErrStruct *err)
     }
 
     // Open database
-    int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
-    //int ret = sqlite3_open(dbPath.c_str(), static_cast<sqlite3**>(&db));
+    //int ret = sqlite3_open(dbPath.c_str(), (struct sqlite3**)&db);
+    int ret = sqlite3_open(dbPath.c_str(), reinterpret_cast<sqlite3**>(&db));
 
     // Check for errors
     if (ret != SQLITE_OK)
@@ -242,9 +244,7 @@ int sqliteHandler::insertValues(const std::string &table, const std::vector<std:
     // Execute query
     int res = query(arg);
     if (res == 0)
-        std::cout << "Inserted values inside table with name " << table << " of database " << dbPath << std::endl;
-    else
-        std::cout << "Cannot insert values inside table with name " << table << " of database " << dbPath << std::endl;
+        *err << "Cannot insert values inside table with name " + table + " of database " + dbPath;
     return res;
 }
 
@@ -281,10 +281,8 @@ int sqliteHandler::insertValues(const std::string &table, const std::vector<std:
 
     // Execute query
     int res = query(arg);
-    if (res == 0)
-        std::cout << "Inserted values inside table with name " << table << " of database " << dbPath << std::endl;
-    else
-        std::cout << "Cannot insert values inside table with name " << table << " of database " << dbPath << std::endl;
+    if (res != 0)
+        *err << "Cannot insert values inside table with name " + table + " of database " + dbPath;
     return res;
 }
 
@@ -324,7 +322,9 @@ int sqliteHandler::showTableValues(const std::string &table, const std::vector<s
 int sqliteHandler::close(ErrStruct *err)
 {
     // Close the database
-    int errCode = sqlite3_close_v2((struct sqlite3*) db);
+    //int errCode = sqlite3_close_v2((struct sqlite3*) db);
+    int errCode = sqlite3_close_v2(reinterpret_cast<sqlite3*>(db));
+
 
     // Check for errors
     if (errCode != SQLITE_OK)
