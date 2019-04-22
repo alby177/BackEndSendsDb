@@ -2,6 +2,7 @@
 #include <vector>
 #include "dbHandlerSrc/sqliteSrc/sqlitehandler.h"
 #include "dbHandlerSrc/commonstructures.h"
+#include "com/mexEngine.h"
 
 int main()
 {
