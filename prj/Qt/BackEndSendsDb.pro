@@ -9,7 +9,8 @@ SOURCES += \
     ../../src/dbHandlerSrc/sqliteSrc/sqlitehandler.cpp \
     ../../src/dbHandlerSrc/sqliteSrc/sqlite3.c \
     ../../src/com/mexEngine.cpp \
-    ../../src/com/mexStructure.cpp
+    ../../src/com/mexStructure.cpp \
+    ../../src/com/server/TcpServer.cpp
 
 HEADERS += \
     ../../src/dbHandlerSrc/dbHandler.h \
@@ -55,4 +56,5 @@ HEADERS += \
     ../../src/com/rapidjson/stringbuffer.h \
     ../../src/com/rapidjson/writer.h \
     ../../src/com/mextypes.h \
-    ../../src/com/constants.h
+    ../../src/com/constants.h \
+    ../../src/com/server/TcpServer.h

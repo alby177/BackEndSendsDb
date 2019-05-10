@@ -11,32 +11,32 @@ int main()
     sqliteHandler sqlDb;
     if (sqlDb.open("testDB.db", &err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
     if (sqlDb.createTable("prova", {"id integer", "name text"}, &err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
     if (sqlDb.insertValues("prova", {"12", "alberto"}, &err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
     if (sqlDb.insertValues("prova", {"name"}, {"angelo", "francesco"}, &err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
     std::vector<std::string> retVec;
     if(sqlDb.showTableValues("prova", &retVec, &err))
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
     if (retVec.size() != 0)
@@ -45,13 +45,13 @@ int main()
 
     if(sqlDb.deleteTable("prova", &err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
     if (sqlDb.close(&err) == -1)
     {
-        std::cout << err.errString << ". With error code " << err.errCode;
+        std::cout << err << std::endl;
         return -1;
     }
 
