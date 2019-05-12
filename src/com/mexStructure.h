@@ -7,21 +7,21 @@
 #include <vector>
 #include <string>
 
-class mexStructure
+class MexStructure
 {
 public:
-    mexStructure();
-    ~mexStructure();
-    void readArguments(char &&msg);
-    void addArguments(std::vector<std::string> &args);
-    char *getMessage() {return message;}
+    MexStructure();
+    ~MexStructure();
+    void ReadArguments(const char *msg);
+    void AddArguments(std::vector<std::string> &args);
+    const char *GetMessage() {return mMessage;}
 
-private:
-    char *message = nullptr;
-    unsigned int firstArg;
-    unsigned int length;
-    std::string dbName;
-    mexTypes mexType;
-    std::vector<std::string> mexArgs;
+//private:
+    const char *mMessage = nullptr;
+    unsigned int mFirstArg;
+    unsigned int mLength;
+    std::string mDbName;
+    mexTypes mMexType;
+    std::vector<std::string> mMexArgs;
 };
 #endif

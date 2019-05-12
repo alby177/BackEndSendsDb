@@ -30,7 +30,7 @@ void TcpServer::CreateSocket()
 		if (mErr != nullptr)
 		{
 			*mErr << "Error creating socket";
-			*mErr << errCodSettings;
+			*mErr << ServerError::errCodCreate;
 		}
 		throw std::exception();
   }
@@ -42,7 +42,7 @@ void TcpServer::CreateSocket()
 		if (mErr != nullptr)
 		{
 			*mErr << "Error setting socket settings";
-			*mErr << errCodSettings;
+			*mErr << ServerError::errCodSettings;
 		}
 		throw std::exception();
   }
@@ -60,7 +60,7 @@ void TcpServer::CreateSocket()
 		if (mErr != nullptr)
 		{
 			*mErr << "Error binding socket" ;
-			*mErr << errCodSettings;
+			*mErr << ServerError::errCodSettings;
 		}
 		throw std::exception();
 	}
@@ -72,7 +72,7 @@ void TcpServer::CreateSocket()
 		if (mErr != nullptr)
 		{
 			*mErr << "Error listening from socket";
-			*mErr << errCodSettings;
+			*mErr << ServerError::errCodSettings;
 		}
 		throw std::exception();
   }

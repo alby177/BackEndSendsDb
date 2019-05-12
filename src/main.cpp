@@ -55,5 +55,8 @@ int main()
         return -1;
     }
 
+    MexEngine engine;
+    engine.mServer->WaitForServerEnd();
+
     return 0;
 }

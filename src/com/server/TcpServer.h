@@ -4,13 +4,16 @@
 #include <mutex>
 #include <arpa/inet.h>
 
-enum ErrorCodes
+namespace ServerError
 {
-  errCodCreate = 1000,        // Error creating socket
-  errCodSettings,             // Error setting socket options
-  errCodBind,                 // Error binding socket
-  errCodListen,               // Error putting socket on listening
-};
+    enum ErrorCodes
+    {
+      errCodCreate = 1000,        // Error creating socket
+      errCodSettings,             // Error setting socket options
+      errCodBind,                 // Error binding socket
+      errCodListen,               // Error putting socket on listening
+    };
+}
 
 struct ErrorStruct
 {
@@ -19,11 +22,11 @@ public:
     {out << err.errString + ". Error code: " + std::to_string(static_cast<int>(err.errCode)); return out;}
   void operator << (const std::string in) {errString = in;}
   void operator << (const char *in) {errString = in;}
-  void operator << (const ErrorCodes &in) {errCode = in;}
-  void operator << (const int &in) {errCode = static_cast<ErrorCodes>(in);}
+  void operator << (const ServerError::ErrorCodes &in) {errCode = in;}
+  void operator << (const int &in) {errCode = static_cast<ServerError::ErrorCodes>(in);}
 
 private:
-  ErrorCodes errCode;
+  ServerError::ErrorCodes errCode;
   std::string errString;
 };
 
