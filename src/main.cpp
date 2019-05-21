@@ -54,7 +54,6 @@ int main()
         std::cout << err << std::endl;
         return -1;
     }
-
     MexEngine engine;
     engine.mServer->WaitForServerEnd();
 

@@ -7,6 +7,7 @@
 #include <exception>
 #include <thread>
 #include <vector>
+#include <assert.h>
 
 #include <iostream>
 
@@ -24,28 +25,30 @@ void TcpServer::CreateSocket()
   bool yes = true;
 
   // Create socket
-  if ((mServerSock = socket( AF_INET, SOCK_STREAM, 0)) < 0)
-  {
-		// Check for error structure pointer
-		if (mErr != nullptr)
-		{
-			*mErr << "Error creating socket";
-			*mErr << ServerError::errCodCreate;
-		}
-		throw std::exception();
-  }
+  assert ((mServerSock = socket( AF_INET, SOCK_STREAM, 0)) >= 0);
+//  if ((mServerSock = socket( AF_INET, SOCK_STREAM, 0)) < 0)
+//  {
+//		// Check for error structure pointer
+//		if (mErr != nullptr)
+//		{
+//			*mErr << "Error creating socket";
+//			*mErr << ServerError::errCodCreate;
+//		}
+//		throw std::exception();
+//  }
 
   // Set socket for binding already binded socket
-  if(setsockopt(mServerSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) < 0)
-  {
-		// Check for error structure pointer
-		if (mErr != nullptr)
-		{
-			*mErr << "Error setting socket settings";
-			*mErr << ServerError::errCodSettings;
-		}
-		throw std::exception();
-  }
+  assert (setsockopt(mServerSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) >= 0);
+//  if (setsockopt(mServerSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) < 0)
+//  {
+//		// Check for error structure pointer
+//		if (mErr != nullptr)
+//		{
+//			*mErr << "Error setting socket settings";
+//			*mErr << ServerError::errCodSettings;
+//		}
+//		throw std::exception();
+//  }
 
   // Set memory structure for TCP/IP connection
 	memset(&servaddr, 0, sizeof(servaddr));
@@ -54,28 +57,30 @@ void TcpServer::CreateSocket()
 	servaddr.sin_port = htons(mPort);
 
 	// Bind created socket
-	if (bind(mServerSock, reinterpret_cast<sockaddr *>(&servaddr), sizeof(servaddr)) < 0)
-  {
-		// Check for error structure pointer
-		if (mErr != nullptr)
-		{
-			*mErr << "Error binding socket" ;
-			*mErr << ServerError::errCodSettings;
-		}
-		throw std::exception();
-	}
+    assert(bind(mServerSock, reinterpret_cast<sockaddr *>(&servaddr), sizeof(servaddr)) >= 0);
+//	if (bind(mServerSock, reinterpret_cast<sockaddr *>(&servaddr), sizeof(servaddr)) < 0)
+//  {
+//		// Check for error structure pointer
+//		if (mErr != nullptr)
+//		{
+//			*mErr << "Error binding socket" ;
+//			*mErr << ServerError::errCodSettings;
+//		}
+//		throw std::exception();
+//	}
 
 	// Set socket to listen
-	if (listen(mServerSock, mMaxClients) < 0)
-  {
-		// Check for error structure pointer
-		if (mErr != nullptr)
-		{
-			*mErr << "Error listening from socket";
-			*mErr << ServerError::errCodSettings;
-		}
-		throw std::exception();
-  }
+    assert(listen(mServerSock, mMaxClients) >= 0);
+//	if (listen(mServerSock, mMaxClients) < 0)
+//  {
+//		// Check for error structure pointer
+//		if (mErr != nullptr)
+//		{
+//			*mErr << "Error listening from socket";
+//			*mErr << ServerError::errCodSettings;
+//		}
+//		throw std::exception();
+//  }
 }
 
 void TcpServer::AddClientFunction(void (*clientFunction)(ServerStruct *serverStruct), void *clientData, const bool &oneCycle)

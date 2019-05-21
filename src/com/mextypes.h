@@ -4,7 +4,7 @@
 // Enumerator for available database management functions
 enum mexTypes
 {
-    openDb,
+    openDb = 0,
     createTable,
     deleteTable,
     insertValues,

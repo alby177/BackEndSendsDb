@@ -10,18 +10,18 @@
 class MexStructure
 {
 public:
-    MexStructure();
-    ~MexStructure();
-    void ReadArguments(const char *msg);
-    void AddArguments(std::vector<std::string> &args);
-    const char *GetMessage() {return mMessage;}
+                                MexStructure            ();
+    virtual                    ~MexStructure            ();
+    void                        ReadArguments           (std::string &msg);
+    void                        AddArguments            (std::vector<std::string> &args);
+    //const char *GetMessage() {return mMessage;}
 
 //private:
-    const char *mMessage = nullptr;
-    unsigned int mFirstArg;
-    unsigned int mLength;
-    std::string mDbName;
-    mexTypes mMexType;
-    std::vector<std::string> mMexArgs;
+    std::string                 mMessage                {""};
+    unsigned int                mFirstArg               {0};
+    unsigned int                mLength                 {0};
+    std::string                 mDbName                 {""};
+    mexTypes                    mMexType;
+    std::vector<std::string>    mMexArgs;
 };
 #endif

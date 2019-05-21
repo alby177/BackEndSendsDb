@@ -4,7 +4,6 @@
 
 namespace constants
 {
-    const std::string FirstArg          {"FirstArg"};
     const std::string Length            {"Length"};
     const std::string DbName            {"DbName"};
     const std::string OperationType     {"OpType"};

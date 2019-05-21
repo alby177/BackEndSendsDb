@@ -35,7 +35,7 @@ struct ServerStruct
 public:
   sockaddr_in         clientData;                    // IP client data
   int                 clientSock;                    // Client socket address
-  void const          *userData;                      // Data provided by the user
+  void               *userData;                      // Data provided by the user
 };
 
 class TcpServer
@@ -45,7 +45,7 @@ public:
   ~TcpServer(){}
   void CreateSocket();
   void AddClientFunction(void (*clientFunction)(ServerStruct *serverStruct), void *clientData = nullptr, const bool &oneCycle = false);  // Run connected client code
-  const inline int GetPortNumber() {return mPort;}  // Get port number
+  inline int GetPortNumber() const {return mPort;}  // Get port number
   void StopServer();
   void WaitForServerEnd();
 

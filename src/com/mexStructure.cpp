@@ -1,6 +1,8 @@
 #include "mexStructure.h"
 #include "constants.h"
 
+#include <iostream>
+
 MexStructure::MexStructure()
 {
 
@@ -8,40 +10,39 @@ MexStructure::MexStructure()
 
 MexStructure::~MexStructure()
 {
-    // Destroy JSON message
-    delete mMessage;
+
 }
 
-void MexStructure::ReadArguments(const char *msg)
+void MexStructure::ReadArguments(std::string &msg)
 {
     // Save pointer to JSON message
-    mMessage = msg;
+    //mMessage = msg;
 
     // Parse JSON message
     rapidjson::Document tmp;
-    tmp.Parse(mMessage);
+    tmp.Parse(msg.c_str());
 
-    // Check for message
-    if(mMessage != nullptr)
+    // Save received parameters
+    mLength              = tmp[constants::Length.c_str()].GetUint();
+    mDbName              = tmp[constants::DbName.c_str()].GetString();
+    mMexType             = static_cast<mexTypes>(tmp[constants::OperationType.c_str()].GetInt());
+
+    // Save reference to arguments array
+    //const rapidjson::Value &args = tmp[constants::Args.c_str()];
+
+    // Access received array
+    //for (unsigned int i = mFirstArg; i < mLength; i++)
+    for (auto &v : tmp[constants::Args.c_str()].GetArray())
+        // Save arguments inside message object
+
     {
-        // Save received parameters
-        mFirstArg            = tmp[constants::FirstArg.c_str()].GetUint();
-        mLength              = tmp[constants::Length.c_str()].GetUint();
-        mDbName              = tmp[constants::DbName.c_str()].GetString();
-        mMexType             = static_cast<mexTypes>(tmp[constants::OperationType.c_str()].GetInt());
-
-        // Save reference to arguments array
-        const rapidjson::Value &args = tmp[constants::Args.c_str()];
-
-        // Access received array
-        for (unsigned int i = mFirstArg; i < mLength; i++)
-
-            // Save arguments inside message object
-            mMexArgs.push_back(args[i].GetString());
-
-        // Update position for the arguments add
-        mFirstArg += mLength;
+        //mMexArgs.push_back(std::string(v.GetString()));
+        std::cout << v.GetString() << std::endl;
+        std::cout << sizeof(v.GetString()) << std::endl;
+        std::cout << sizeof(std::string) << std::endl;
     }
+    // Update position for the arguments add
+    mFirstArg += mLength;
 }
 
 void MexStructure::AddArguments(std::vector<std::string> &args)
@@ -57,12 +58,12 @@ void MexStructure::AddArguments(std::vector<std::string> &args)
     writer.StartObject();
 
     // Update necessary message parameters
-    writer.Key(constants::FirstArg.c_str());
-    writer.Uint(mFirstArg);
     writer.Key(constants::Length.c_str());
     writer.Uint(mLength);
+
     writer.Key(constants::DbName.c_str());
-    writer.String(mDbName.c_str(), static_cast<unsigned int>(mDbName.size()));
+    writer.String(mDbName.c_str(), static_cast<unsigned int>(mDbName.length()));
+
     writer.Key(constants::OperationType.c_str());
     writer.Int(mMexType);
 
@@ -72,14 +73,16 @@ void MexStructure::AddArguments(std::vector<std::string> &args)
 
     // Add new arguments
     for (unsigned int i = 0; i < mLength; i++)
-        writer.String(args[i].c_str(), static_cast<unsigned int>(args[i].size()));
+    {
+        writer.String(args[i].c_str(), static_cast<unsigned int>(args[i].length()));
+    }
 
     // End array data adding
-    writer.EndArray(mLength);
+    writer.EndArray();
 
     // End JSON object
     writer.EndObject();
 
     // Get string pointer
-    mMessage = (char *)(buffer.GetString());
+    mMessage = static_cast<std::string>(buffer.GetString());
 }
