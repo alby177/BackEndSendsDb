@@ -12,7 +12,7 @@ public:
     MexEngine();
     ~MexEngine();
     //void Communication(ServerStruct *serverData);
-    MexStructure *mMessage;
+    MexStructure   *mMessage  {nullptr};
 
 //private:
     TcpServer      *mServer {nullptr};

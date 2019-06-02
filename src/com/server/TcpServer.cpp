@@ -183,7 +183,10 @@ void TcpServer::StopServer()
 void TcpServer::WaitForServerEnd()
 {
 	// Wait server to finish execution
-	while(mServerRunning == true);
+    while(mServerRunning == true)
+
+        // Reduce CPU usage
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 void TcpServer::Close()
@@ -195,19 +198,19 @@ void TcpServer::Close()
 		close(mServerSock);
 }
 
-size_t TcpServer::Send(ServerStruct *serverStruct, const std::string &message)
+ssize_t TcpServer::Send(ServerStruct *serverStruct, const std::string &message)
 {
 	// Send message to client
-	size_t byteSent = send(serverStruct->clientSock, message.c_str(), message.size(), 0);
+    ssize_t byteSent = send(serverStruct->clientSock, message.c_str(), message.size(), 0);
 	return byteSent;
 }
 
-size_t TcpServer::Receive(ServerStruct *serverStruct, std::string &message)
+ssize_t TcpServer::Receive(ServerStruct *serverStruct, std::string &message)
 {
 	char mess[500];
 
 	// Receive message from client
-	size_t received = recv(serverStruct->clientSock, mess, sizeof(mess), 0);
+    ssize_t received = recv(serverStruct->clientSock, mess, sizeof(mess), 0);
 
 	// Save received data
 	message = mess;

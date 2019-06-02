@@ -50,8 +50,8 @@ public:
   void WaitForServerEnd();
 
   // Static funtion declaration
-  static size_t Send(ServerStruct *serverStruct, const std::string &message);
-  static size_t Receive(ServerStruct *serverStruct, std::string &message);
+  static ssize_t Send(ServerStruct *serverStruct, const std::string &message);
+  static ssize_t Receive(ServerStruct *serverStruct, std::string &message);
 
 private:
   // Private methods

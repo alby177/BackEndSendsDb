@@ -21,7 +21,7 @@ public:
     unsigned int                mFirstArg               {0};
     unsigned int                mLength                 {0};
     std::string                 mDbName                 {""};
-    mexTypes                    mMexType;
+    mexTypes                    mMexType                {mexTypes::error};
     std::vector<std::string>    mMexArgs;
 };
 #endif

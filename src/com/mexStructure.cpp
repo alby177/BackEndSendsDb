@@ -23,12 +23,12 @@ void MexStructure::ReadArguments(std::string &msg)
     tmp.Parse(msg.c_str());
 
     // Save received parameters
-    mLength              = tmp[constants::Length.c_str()].GetUint();
-    mDbName              = tmp[constants::DbName.c_str()].GetString();
-    mMexType             = static_cast<mexTypes>(tmp[constants::OperationType.c_str()].GetInt());
+    mLength             = tmp[constants::Length.c_str()].GetUint();
+    mDbName             = tmp[constants::DbName.c_str()].GetString();
+    mMexType            = static_cast<mexTypes>(tmp[constants::OperationType.c_str()].GetInt());
 
     // Save reference to arguments array
-    //const rapidjson::Value &args = tmp[constants::Args.c_str()];
+    //const rapidjson::Value args = tmp[constants::Args.c_str()];
 
     // Access received array
     //for (unsigned int i = mFirstArg; i < mLength; i++)
@@ -37,10 +37,15 @@ void MexStructure::ReadArguments(std::string &msg)
 
     {
         //mMexArgs.push_back(std::string(v.GetString()));
-        std::cout << v.GetString() << std::endl;
-        std::cout << sizeof(v.GetString()) << std::endl;
-        std::cout << sizeof(std::string) << std::endl;
+        std::cout << "Vector argument is: " << v.GetString() << std::endl;
+        std::cout << "Size of vector string is: " << sizeof(v.GetString()) << std::endl;
+        std::cout << "Size of standard string is: " << sizeof(std::string) << std::endl;
+
+        // Save argument inside arguments array
+        std::cout << "MexArgs array size is: " << mMexArgs.size() << std::endl;
+        mMexArgs.push_back(v.GetString());
     }
+
     // Update position for the arguments add
     mFirstArg += mLength;
 }
@@ -72,7 +77,7 @@ void MexStructure::AddArguments(std::vector<std::string> &args)
     writer.StartArray();
 
     // Add new arguments
-    for (unsigned int i = 0; i < mLength; i++)
+    for (unsigned int i = mFirstArg; i < mLength; i++)
     {
         writer.String(args[i].c_str(), static_cast<unsigned int>(args[i].length()));
     }
