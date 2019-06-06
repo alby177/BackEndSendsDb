@@ -38,11 +38,8 @@ void MexStructure::ReadArguments(std::string &msg)
     {
         //mMexArgs.push_back(std::string(v.GetString()));
         std::cout << "Vector argument is: " << v.GetString() << std::endl;
-        std::cout << "Size of vector string is: " << sizeof(v.GetString()) << std::endl;
-        std::cout << "Size of standard string is: " << sizeof(std::string) << std::endl;
 
         // Save argument inside arguments array
-        std::cout << "MexArgs array size is: " << mMexArgs.size() << std::endl;
         mMexArgs.push_back(v.GetString());
     }
 

@@ -7,17 +7,21 @@ MexEngine::MexEngine()
     // Create new server object instance
     mServer = new TcpServer;
 
+    // Create new message object instance
+    mMessage = new MexStructure;
+
     // Connect to server
     mServer->CreateSocket();
 
     // Set up function to run with clients
-    mServer->AddClientFunction(&Communication, &mMessage);
+    mServer->AddClientFunction(&Communication, mMessage);
 }
 
 MexEngine::~MexEngine()
 {
     // Free heap memory
     delete mServer;
+    delete mMessage;
 }
 
 void Communication(ServerStruct *serverData)
